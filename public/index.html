@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<title>Волна</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@600&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<main class="auth" id="auth" hidden>
+  <div class="auth-card">
+    <h1 class="brand">Волна</h1>
+    <p class="auth-sub">Мессенджер для друзей и каналов</p>
+    <div class="seg" role="tablist">
+      <button type="button" class="seg-btn on" id="tabLogin" role="tab">Вход</button>
+      <button type="button" class="seg-btn" id="tabReg" role="tab">Регистрация</button>
+    </div>
+    <form id="authForm" class="auth-form" autocomplete="on">
+      <label id="nameWrap" hidden>Имя
+        <input class="field" id="fName" type="text" maxlength="40" autocomplete="name" placeholder="Как вас называть">
+      </label>
+      <label>Логин
+        <input class="field" id="fUser" type="text" maxlength="24" autocomplete="username" autocapitalize="none" placeholder="латиница, цифры, _" required>
+      </label>
+      <label>Пароль
+        <input class="field" id="fPass" type="password" maxlength="100" autocomplete="current-password" placeholder="не короче 6 символов" required>
+      </label>
+      <p class="form-error" id="authError" role="alert"></p>
+      <button class="btn wide" id="authSubmit" type="submit">Войти</button>
+    </form>
+  </div>
+</main>
+
+<div class="app" id="app" data-view="list" hidden>
+  <aside class="side">
+    <div class="side-top">
+      <span class="brand sm">Волна</span>
+    </div>
+    <div class="seg tabs">
+      <button type="button" class="seg-btn on" data-tab="chats">Чаты</button>
+      <button type="button" class="seg-btn" data-tab="search">Поиск</button>
+      <button type="button" class="seg-btn" data-tab="profile">Профиль</button>
+    </div>
+
+    <section class="panel" id="panel-chats">
+      <nav class="list" id="list" aria-label="Чаты"></nav>
+    </section>
+
+    <section class="panel" id="panel-search" hidden>
+      <div class="pad">
+        <input class="field" id="searchInput" type="search" placeholder="Имя, логин или название канала" autocomplete="off">
+      </div>
+      <div class="list" id="searchResults"></div>
+      <form class="pad box" id="channelForm">
+        <strong>Создать канал</strong>
+        <input class="field" id="chTitle" type="text" maxlength="50" placeholder="Название канала" required>
+        <input class="field" id="chAbout" type="text" maxlength="200" placeholder="О чём канал (по желанию)">
+        <button class="btn" type="submit">Создать</button>
+      </form>
+    </section>
+
+    <section class="panel" id="panel-profile" hidden>
+      <form class="pad box" id="profileForm">
+        <div class="avatar big" id="profAv"></div>
+        <div class="muted" id="profLogin"></div>
+        <label>Имя
+          <input class="field" id="profName" type="text" maxlength="40" required>
+        </label>
+        <button class="btn" type="submit">Сохранить имя</button>
+        <button class="btn ghost" id="logoutBtn" type="button">Выйти из аккаунта</button>
+      </form>
+    </section>
+  </aside>
+
+  <section class="chat">
+    <div class="placeholder" id="empty">
+      <div><strong>Выберите чат</strong>Откройте переписку слева или найдите человека во вкладке «Поиск».</div>
+    </div>
+    <div class="chat-body" id="chatBody" hidden>
+      <header class="chat-head">
+        <button class="icon back" id="backBtn" type="button" aria-label="Назад к чатам">
+          <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <div class="avatar sm" id="headAv"></div>
+        <div class="head-text">
+          <span class="head-name" id="headName"></span>
+          <span class="head-sub" id="headSub"></span>
+        </div>
+        <button class="btn ghost small" id="leaveBtn" type="button" hidden>Покинуть</button>
+      </header>
+      <div class="messages" id="messages" aria-live="polite"></div>
+      <form class="composer" id="composer">
+        <div class="recbar" id="rec" hidden>
+          <span class="recdot"></span><span id="recTime">0:00</span>
+          <span class="grow"></span>
+          <button type="button" class="btn ghost small" id="recCancel">Отмена</button>
+          <button type="button" class="btn small" id="recSend">Отправить</button>
+        </div>
+        <div class="inputrow" id="inputRow">
+          <textarea id="input" rows="1" placeholder="Сообщение" aria-label="Сообщение"></textarea>
+          <button type="button" class="icon" id="videoBtn" aria-label="Видеосообщение до 30 секунд">
+            <svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="M16 10l5-3v10l-5-3z"/></svg>
+          </button>
+          <button type="button" class="icon" id="micBtn" aria-label="Голосовое сообщение">
+            <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>
+          </button>
+          <button type="submit" class="send" id="sendBtn" aria-label="Отправить" hidden>
+            <svg viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-3-7z"/></svg>
+          </button>
+        </div>
+      </form>
+      <div class="readonly" id="readonly" hidden>В этом канале пишет только владелец</div>
+    </div>
+  </section>
+</div>
+
+<div class="overlay" id="vOverlay" hidden>
+  <div class="vbox">
+    <video id="vPreview" playsinline></video>
+    <div class="vtimer" id="vTimer">0:00 / 0:30</div>
+    <div class="vactions">
+      <button type="button" class="btn ghost" id="vCancel">Отмена</button>
+      <button type="button" class="btn rec" id="vRecord">Записать</button>
+      <button type="button" class="btn rec" id="vStop" hidden>Стоп</button>
+      <button type="button" class="btn ghost" id="vRetake" hidden>Переснять</button>
+      <button type="button" class="btn" id="vSend" hidden>Отправить</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
